@@ -74,6 +74,7 @@ class TrainingPipeline:
                 print("-" * 50)
 
             # 6. Automatic Insights Calculation
+            # 6. Automatic Insights Calculation
             print("\n[ EXPERIMENT INSIGHTS ]")
             best_tier = max(experiment_results, key=lambda t: experiment_results[t]['Test R2'])
             print(f">> Best Performing Architecture: Tier {best_tier} ({experiment_results[best_tier]['Best Model']})")
@@ -83,9 +84,9 @@ class TrainingPipeline:
             gain_BC = experiment_results['C']['Test R2'] - experiment_results['B']['Test R2']
             total_gain = experiment_results['C']['Test R2'] - experiment_results['A']['Test R2']
 
-            print(f"  A -> B (Utilization Value): +{gain_AB:.4f} R2")
-            print(f"  B -> C (Insurance Value):   +{gain_BC:.4f} R2")
-            print(f"  Total Information Gain:     +{total_gain:.4f} R2\n")
+            print(f"  A -> B (Utilization Value): {gain_AB:+.4f} R2")
+            print(f"  B -> C (Insurance Value):   {gain_BC:+.4f} R2")
+            print(f"  Total Information Gain:     {total_gain:+.4f} R2\n")
 
         except Exception as e:
             raise CustomException(e, sys)

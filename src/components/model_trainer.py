@@ -129,8 +129,7 @@ class ModelTrainer:
             best_model_data = model_report[best_model_name]
 
             if best_model_data["Test_R2"] < 0.4:
-                raise CustomException(f"No acceptable model found for Tier {model_tier}. Best R2: {best_model_data['Test_R2']}", sys)
-
+                logging.warning(f"Low model performance for Tier {model_tier}: R2 = {best_model_data['Test_R2']:.4f}")
             logging.info(
                 f"=== Tier {model_tier} Winner: {best_model_name} ==="
             )

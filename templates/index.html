@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underwriting AI | Medical Cost Estimation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --error-bg: #fee2e2;
+            --error-text: #991b1b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            color: var(--text-main);
+        }
+
+        .header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        input[type="number"], select {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        input[type="number"]:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            background: var(--bg-color);
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid #bbf7d0;
+        }
+
+        .error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid #fecaca;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Medical Cost Estimation Engine</h1>
+        <p>Tier C Architecture: Baseline Health, Utilization Proxy & Policy Mechanics</p>
+    </div>
+
+    <form action="/predict" method="POST">
+        
+        <!-- Demographics -->
+        <div class="section-card">
+            <div class="section-title">1. Demographics & Socioeconomics</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" name="age" required value="45">
+                </div>
+                <div class="form-group">
+                    <label>Sex</label>
+                    <select name="sex">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Region</label>
+                    <select name="region">
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                        <option value="Central">Central</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Area Type</label>
+                    <select name="urban_rural">
+                        <option value="Urban">Urban</option>
+                        <option value="Suburban">Suburban</option>
+                        <option value="Rural">Rural</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Education</label>
+                    <select name="education">
+                        <option value="HS">High School</option>
+                        <option value="Some College">Some College</option>
+                        <option value="Bachelors">Bachelors</option>
+                        <option value="Masters">Masters</option>
+                        <option value="Doctorate">Doctorate</option>
+                        <option value="No HS">No High School</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Marital Status</label>
+                    <select name="marital_status">
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Employment</label>
+                    <select name="employment_status">
+                        <option value="Employed">Employed</option>
+                        <option value="Self-employed">Self-employed</option>
+                        <option value="Unemployed">Unemployed</option>
+                        <option value="Retired">Retired</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Annual Income ($)</label>
+                    <input type="number" name="income" required value="65000">
+                </div>
+                <div class="form-group">
+                    <label>Household Size</label>
+                    <input type="number" name="household_size" required value="3">
+                </div>
+                <div class="form-group">
+                    <label>Dependents</label>
+                    <input type="number" name="dependents" required value="1">
+                </div>
+            </div>
+        </div>
+
+        <!-- Biometrics & Lifestyle -->
+        <div class="section-card">
+            <div class="section-title">2. Biometrics & Lifestyle</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>BMI</label>
+                    <input type="number" step="0.1" name="bmi" required value="26.5">
+                </div>
+                <div class="form-group">
+                    <label>Systolic BP</label>
+                    <input type="number" name="systolic_bp" required value="120">
+                </div>
+                <div class="form-group">
+                    <label>Diastolic BP</label>
+                    <input type="number" name="diastolic_bp" required value="80">
+                </div>
+                <div class="form-group">
+                    <label>LDL Cholesterol</label>
+                    <input type="number" step="0.1" name="ldl" required value="110.5">
+                </div>
+                <div class="form-group">
+                    <label>HbA1c</label>
+                    <input type="number" step="0.1" name="hba1c" required value="5.4">
+                </div>
+                <div class="form-group">
+                    <label>Smoker Status</label>
+                    <select name="smoker">
+                        <option value="Never">Never</option>
+                        <option value="Former">Former</option>
+                        <option value="Current">Current</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Alcohol Frequency</label>
+                    <select name="alcohol_freq">
+                        <option value="Unknown">Unknown</option>
+                        <option value="Occasional">Occasional</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Daily">Daily</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Replace your Clinical History Flags section with this hardened version -->
+<div class="section-card">
+    <div class="section-title">3. Clinical History Flags</div>
+    <div class="checkbox-grid">
+        <!-- Hidden input ensures a '0' is sent if box is unchecked -->
+        <div class="checkbox-group">
+            <input type="hidden" name="hypertension" value="0">
+            <input type="checkbox" id="hyper" name="hypertension" value="1"><label for="hyper">Hypertension</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="diabetes" value="0">
+            <input type="checkbox" id="diab" name="diabetes" value="1"><label for="diab">Diabetes</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="asthma" value="0">
+            <input type="checkbox" id="asthma" name="asthma" value="1"><label for="asthma">Asthma</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="copd" value="0">
+            <input type="checkbox" id="copd" name="copd" value="1"><label for="copd">COPD</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="cardiovascular_disease" value="0">
+            <input type="checkbox" id="cvd" name="cardiovascular_disease" value="1"><label for="cvd">Cardiovascular</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="cancer_history" value="0">
+            <input type="checkbox" id="cancer" name="cancer_history" value="1"><label for="cancer">Cancer History</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="kidney_disease" value="0">
+            <input type="checkbox" id="kidney" name="kidney_disease" value="1"><label for="kidney">Kidney Disease</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="liver_disease" value="0">
+            <input type="checkbox" id="liver" name="liver_disease" value="1"><label for="liver">Liver Disease</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="arthritis" value="0">
+            <input type="checkbox" id="arth" name="arthritis" value="1"><label for="arth">Arthritis</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="hidden" name="mental_health" value="0">
+            <input type="checkbox" id="mental" name="mental_health" value="1"><label for="mental">Mental Health</label>
+        </div>
+        <div class="checkbox-group" style="background-color: #fee2e2; border-color: #fca5a5;">
+            <input type="hidden" name="is_high_risk" value="0">
+            <input type="checkbox" id="highrisk" name="is_high_risk" value="1"><label for="highrisk" style="color: #991b1b; font-weight: 500;">High Risk Flag</label>
+        </div>
+    </div>
+</div>
+
+        <!-- Utilization & Medication -->
+        <div class="section-card">
+            <div class="section-title">4. Historical Utilization</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Chronic Condition Count</label>
+                    <input type="number" name="chronic_count" required value="0">
+                </div>
+                <div class="form-group">
+                    <label>Current Medications Count</label>
+                    <input type="number" name="medication_count" required value="1">
+                </div>
+                <div class="form-group">
+                    <label>Doctor Visits (Last Year)</label>
+                    <input type="number" name="visits_last_year" required value="2">
+                </div>
+                <div class="form-group">
+                    <label>Hospitalizations (Last 3 Yrs)</label>
+                    <input type="number" name="hospitalizations_last_3yrs" required value="0">
+                </div>
+                <div class="form-group">
+                    <label>Days Hospitalized (Last 3 Yrs)</label>
+                    <input type="number" name="days_hospitalized_last_3yrs" required value="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- Insurance Mechanics -->
+        <div class="section-card">
+            <div class="section-title">5. Insurance Mechanics</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Plan Type</label>
+                    <select name="plan_type">
+                        <option value="PPO">PPO</option>
+                        <option value="HMO">HMO</option>
+                        <option value="POS">POS</option>
+                        <option value="EPO">EPO</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Network Tier</label>
+                    <select name="network_tier">
+                        <option value="Bronze">Bronze</option>
+                        <option value="Silver">Silver</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Platinum">Platinum</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Deductible ($)</label>
+                    <input type="number" name="deductible" required value="1500">
+                </div>
+                <div class="form-group">
+                    <label>Copay ($)</label>
+                    <input type="number" name="copay" required value="25">
+                </div>
+                <div class="form-group">
+                    <label>Policy Term (Years)</label>
+                    <input type="number" name="policy_term_years" required value="3">
+                </div>
+                <div class="form-group">
+                    <label>Policy Changes (Last 2 Yrs)</label>
+                    <input type="number" name="policy_changes_last_2yrs" required value="0">
+                </div>
+                <div class="form-group">
+                    <label>Provider Quality Score</label>
+                    <input type="number" step="0.01" name="provider_quality" required value="4.2">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Run ML Prediction</button>
+    </form>
+
+    {% if results %}
+        <div class="result-box success">
+            Estimated Annual Medical Cost: ${{ "{:,.2f}".format(results) }}
+        </div>
+    {% endif %}
+    
+    {% if error %}
+        <div class="result-box error">
+            {{ error }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
