@@ -1,42 +1,141 @@
-Project Overview : This project focuses on the Regression-Based Estimation of Individual Medical Insurance Charges using health indicators. Unlike standard projects that use a single model, this repository implements a 3-Tier Experimental Architecture to decompose medical costs into biological, behavioral, and systemic components.The objective is to predict annual_medical_cost accurately while maintaining strict data integrity by eliminating "post-outcome" leakage variables.
+# 🧠 Medical Insurance Cost Prediction (3-Tier ML System)
 
-Project Architecture : The project follows a modular, industry-standard pipeline structure as required:
+## 📌 Overview
+This project builds a **regression-based machine learning system** to estimate individual medical insurance costs using health, behavioral, and policy-related features.
 
+Unlike traditional single-model approaches, this project introduces a **3-Tier Experimental Architecture** to systematically analyze what actually drives medical costs.
+
+---
+
+## 🎯 Problem Statement
+Predicting healthcare costs is inherently difficult due to:
+- High variability (accidents, sudden illness)
+- Hidden systemic factors
+- Data leakage risks
+
+This project focuses on:
+- Predicting `annual_medical_cost`
+- Eliminating leakage variables
+- Understanding **what truly drives cost**
+
+---
+
+## 🧱 Project Architecture
 medical_insurance_project/
+│
 ├── src/
-│   ├── components/
-│   │   ├── data_ingestion.py      # Data loading & splitting
-│   │   ├── data_transformation.py # Tiered feature engineering & preprocessing
-│   │   └── model_trainer.py       # Multi-model training & evaluation
-│   ├── pipeline/
-│   │   ├── training_pipeline.py   # Orchestrates the A/B/C experiment
-│   │   └── predict_pipeline.py    # Handles web-based inference
-│   ├── logger.py                  # Custom logging for all stages
-│   ├── exception.py               # Hardened error handling
-│   └── utils.py                   # Model/Preprocessor I/O
+│ ├── components/
+│ │ ├── data_ingestion.py
+│ │ ├── data_transformation.py
+│ │ └── model_trainer.py
+│ │
+│ ├── pipeline/
+│ │ ├── training_pipeline.py
+│ │ └── predict_pipeline.py
+│ │
+│ ├── logger.py
+│ ├── exception.py
+│ └── utils.py
+│
 ├── notebooks/
-│   ├── 1_EDA.ipynb                # Statistical analysis & visualizations
-│   └── 2_Model_Training.ipynb     # Initial model prototyping
+│ ├── 1_EDA.ipynb
+│ └── 2_Model_Training.ipynb
+│
 ├── templates/
-│   └── index.html                 # Modern Flask-based UI
-├── application.py                 # Flask entry point
-├── requirements.txt               # Dependencies
-└── setup.py                       # Package configuration
+│ └── index.html
+│
+├── app.py
+├── requirements.txt
+└── setup.py
 
 
 
-The 3-Tier Experiment
-We analyzed the dataset through three distinct lenses to measure Information Gain:
-Tier A (Baseline Health): Focuses solely on biometrics (BMI, Age, BP) and demographics.
+---
 
-Tier B (Utilization Proxy): Adds historical data (past hospitalizations, doctor visits) to measure behavioral risk.
+## 🔬 3-Tier Experimental Design
 
-Tier C (Insurance Mechanics): Adds policy-specific variables (deductibles, plan types) to measure systemic cost influence.
+| Tier | Description | Purpose |
+|------|------------|--------|
+| **A** | Baseline Health | Biometrics + demographics |
+| **B** | Utilization | Adds hospital visits & history |
+| **C** | Insurance | Adds policy & financial structure |
+
+---
+
+## 📊 Results
+
+| Tier | Best Model | R² Score | RMSE |
+|------|-----------|----------|------|
+| A | Ridge Regression | 0.056 | ~$3047 |
+| B | Ridge Regression | 0.113 | ~$2953 |
+| C | Ridge Regression | 0.113 | ~$2953 |
+
+---
+
+## 📈 Key Insights
+
+### 1. Healthcare is inherently unpredictable
+- Model explains ~11% variance
+- Remaining cost driven by stochastic events
+
+---
+
+### 2. Behavior > Biology
+- Adding utilization **doubled model performance**
+- Past hospital usage is strongest predictor
+
+---
+
+### 3. Insurance ≠ Cost driver
+- Insurance features added **no real predictive value**
+- They affect payment, not actual medical cost
+
+---
+
+### 4. Simpler models win
+- Ridge Regression outperformed XGBoost & Random Forest
+- Indicates low signal-to-noise ratio
+
+---
+
+## ⚙️ Key Features
+
+- ✅ Data Leakage Removal  
+- ✅ Log Transformation (`log1p`)  
+- ✅ Feature Engineering (MAP)  
+- ✅ Modular ML Pipeline  
+- ✅ Flask Web Deployment  
+- ✅ Robust Input Handling (checkbox fix)
+
+---
+
+## 🌐 Web Application
+
+A Flask-based UI allows real-time prediction.
+
+📸 **UI Preview:**
 
 
+---
 
-Key Features & Highlights
-Data Leakage Prevention: Strictly removed columns like total_claims_paid and claims_count that are not available before a prediction is needed.
+## 🚀 How to Run
+Clone repository
+git clone https://github.com/zaidshaikh08/medical-insurance-prediction.git
+cd medical-insurance-prediction
+
+Install dependencies
+pip install -r requirements.txt
+
+Train models
+python -m src.pipeline.training_pipeline
+
+Run app
+python app.py
+
+Open browser
+http://127.0.0.1:5000/
+
+---
 
 Target Transformation: Implemented log1p transformation to handle the severe right-skewness of medical costs found during EDA.
 
@@ -44,34 +143,15 @@ Feature Engineering: Engineered Mean Arterial Pressure (MAP) to resolve multicol
 
 Hardened Deployment: The Flask UI includes a "Hidden Input" pattern for checkboxes to ensure consistent binary signal delivery to the model.
 
-
-
-Installation & Usage
-Clone the Repository:
-git clone https://github.com/zaidshaikh08/medical-insurance-prediction.git
-cd medical_insurance_project
-
-Install Dependencies: 
-pip install -r requirements.txt
-
-Run Training Pipeline:
-This will execute the A/B/C experiment and save the winning models in artifacts/.
-python -m src.pipeline.training_pipeline
-
-Launch Web App: 
-    python app.py
-
-Navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000) to use the cost predictor.
-
- 
  
 Results Summary
  Our experimental results indicated:
+ 
  A → B Gain: Adding utilization data significantly improves $R^2$, proving past behavior is a strong proxy for future risk.
-
+ 
  B → C Gain: Structural insurance mechanics provided negligible gain, suggesting billed costs are driven primarily by medical severity rather than policy design.
 
-
+---
 
 Contributors 
 Mohammed Zaid Shaikh - Enrollment No: 220220202 (Contribution: 40)
@@ -81,4 +161,3 @@ Tahur Qureshi - Enrollment No. : 220220167 (Contribution: 20%)
 Yash Devendra Mandal - Roll No: 220220192 (Contribution: 20%)
 
 Pravin Mishra - Roll No: 220220 (Contribution: 10%)
-
