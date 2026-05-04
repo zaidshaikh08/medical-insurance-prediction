@@ -21,38 +21,37 @@ This project focuses on:
 ---
 
 ## 🧱 Project Architecture
+
+```text
 medical_insurance_project/
 │
 ├── src/
-│ ├── components/
-│ │ ├── data_ingestion.py
-│ │ ├── data_transformation.py
-│ │ └── model_trainer.py
-│ │
-│ ├── pipeline/
-│ │ ├── training_pipeline.py
-│ │ └── predict_pipeline.py
-│ │
-│ ├── logger.py
-│ ├── exception.py
-│ └── utils.py
+│   ├── components/
+│   │   ├── data_ingestion.py
+│   │   ├── data_transformation.py
+│   │   └── model_trainer.py
+│   │
+│   ├── pipeline/
+│   │   ├── training_pipeline.py
+│   │   └── predict_pipeline.py
+│   │
+│   ├── logger.py
+│   ├── exception.py
+│   └── utils.py
 │
 ├── notebooks/
-│ ├── 1_EDA.ipynb
-│ └── 2_Model_Training.ipynb
+│   ├── 1_EDA.ipynb
+│   └── 2_Model_Training.ipynb
 │
 ├── templates/
-│ └── index.html
+│   └── index.html
 │
 ├── app.py
 ├── requirements.txt
 └── setup.py
+```
 
-
-
----
-
-## 🔬 3-Tier Experimental Design
+## 3-Tier Experimental Design
 
 | Tier | Description | Purpose |
 |------|------------|--------|
@@ -62,7 +61,7 @@ medical_insurance_project/
 
 ---
 
-## 📊 Results
+## Results
 
 | Tier | Best Model | R² Score | RMSE |
 |------|-----------|----------|------|
@@ -72,7 +71,7 @@ medical_insurance_project/
 
 ---
 
-## 📈 Key Insights
+## Key Insights
 
 ### 1. Healthcare is inherently unpredictable
 - Model explains ~11% variance
@@ -109,7 +108,7 @@ medical_insurance_project/
 
 ---
 
-## 🌐 Web Application
+## Web Application
 
 A Flask-based UI allows real-time prediction.
 
@@ -118,8 +117,9 @@ A Flask-based UI allows real-time prediction.
 
 ---
 
-## 🚀 How to Run
+## How to Run
 Clone repository
+```bash
 git clone https://github.com/zaidshaikh08/medical-insurance-prediction.git
 cd medical-insurance-prediction
 
@@ -134,7 +134,7 @@ python app.py
 
 Open browser
 http://127.0.0.1:5000/
-
+```
 ---
 
 Target Transformation: Implemented log1p transformation to handle the severe right-skewness of medical costs found during EDA.
@@ -143,8 +143,9 @@ Feature Engineering: Engineered Mean Arterial Pressure (MAP) to resolve multicol
 
 Hardened Deployment: The Flask UI includes a "Hidden Input" pattern for checkboxes to ensure consistent binary signal delivery to the model.
 
- 
-Results Summary
+---
+
+## Results Summary
  Our experimental results indicated:
  
  A → B Gain: Adding utilization data significantly improves $R^2$, proving past behavior is a strong proxy for future risk.
@@ -153,7 +154,7 @@ Results Summary
 
 ---
 
-Contributors 
+## Contributors 
 Mohammed Zaid Shaikh - Enrollment No: 220220202 (Contribution: 40)
 
 Tahur Qureshi - Enrollment No. : 220220167 (Contribution: 20%)
